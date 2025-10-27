@@ -2,7 +2,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "19.15.1"
 
-  cluster_name    = "local.name"  # Must follow AWS EKS naming rules
+  cluster_name    = "kingsleye"  # Must follow AWS EKS naming rules
   cluster_version = "1.29"
 
   vpc_id     = module.vpc.vpc_id
@@ -19,6 +19,7 @@ module "eks" {
 
   # Tags for the cluster
   tags = {
-    Name = "local.name"
+    Name = "kingsley"
   }
 }
+
