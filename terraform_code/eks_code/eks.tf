@@ -1,33 +1,23 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "21.6.1"
+  version = "19.15.1"
 
   # Cluster configuration
-  cluster = {
-    name    = local.cluster_name
-    version = "1.29"
-    endpoint_public_access = true
-  }
+  cluster_name    = "amazon-prime-cluster"
+  cluster_version = "1.29"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
 
-  # Node groups
+  # Managed Node Group
   eks_managed_node_groups = {
     panda-node = {
       desired_capacity = 2
-      min_capacity     = 2
-      max_capacity     = 4
-
-      instance_types = ["t2.medium"]
-      capacity_type  = "SPOT"
-
-      tags = {
-        ExtraTag = "Panda_Node"
-      }
+      min_size         = 1
+      max_size         = 3
+      instance_types   = ["t2.medium"]
     }
   }
 
-  # Tags
   tags = local.tags
 }
