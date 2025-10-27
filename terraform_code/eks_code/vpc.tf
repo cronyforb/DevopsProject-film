@@ -2,7 +2,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.13.0"
 
-  name = local.name
+  name = amazon-prime-cluster
   cidr = local.vpc_cidr
 
   azs             = local.azs
@@ -19,4 +19,5 @@ module "vpc" {
   private_subnet_tags = {
     "kubernetes.io/role/internal-elb" = 1
   }
+
 }
