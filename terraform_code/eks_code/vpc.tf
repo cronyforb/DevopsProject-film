@@ -2,7 +2,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.16.0"
 
-  name = local.name
+  name = kingsley
   cidr = local.vpc_cidr
 
   azs             = local.azs
@@ -19,6 +19,7 @@ module "vpc" {
     "kubernetes.io/role/internal-elb" = "1"
   }
 
-  tags = local.tags
+  tags = kingsley.tags
 }
+
 
