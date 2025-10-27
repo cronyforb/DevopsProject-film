@@ -2,13 +2,17 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "21.6.1"
 
-  cluster_name    = local.cluster_name
-  cluster_version = "1.29"
-  vpc_id          = module.vpc.vpc_id
-  subnet_ids      = module.vpc.private_subnets
+  # Cluster configuration
+  cluster = {
+    name    = local.cluster_name
+    version = "1.29"
+    endpoint_public_access = true
+  }
 
-  cluster_addons = ["coredns", "vpc-cni", "kube-proxy"]
+  vpc_id     = module.vpc.vpc_id
+  subnet_ids = module.vpc.private_subnets
 
+  # Node groups
   eks_managed_node_groups = {
     panda-node = {
       desired_capacity = 2
@@ -24,5 +28,6 @@ module "eks" {
     }
   }
 
+  # Tags
   tags = local.tags
 }
