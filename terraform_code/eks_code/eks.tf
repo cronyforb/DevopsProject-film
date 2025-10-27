@@ -1,31 +1,19 @@
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.15.1"
+  version = "21.6.1"
 
-  cluster_name                   = "amazon-prime-cluster"
-  cluster_version                = "1.29"
-  cluster_endpoint_public_access = true
+  cluster_name    = local.cluster_name
+  cluster_version = "1.29"
+  vpc_id          = module.vpc.vpc_id
+  subnet_ids      = module.vpc.private_subnets
 
-  cluster_addons = {
-    coredns = {
-      most_recent = true
-    }
-    kube-proxy = {
-      most_recent = true
-    }
-    vpc-cni = {
-      most_recent = true
-    }
-  }
-
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnets
+  cluster_addons = ["coredns", "vpc-cni", "kube-proxy"]
 
   eks_managed_node_groups = {
     panda-node = {
-      min_size     = 2
-      max_size     = 4
-      desired_size = 2
+      desired_capacity = 2
+      min_capacity     = 2
+      max_capacity     = 4
 
       instance_types = ["t2.medium"]
       capacity_type  = "SPOT"
